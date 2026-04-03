@@ -1,3 +1,3 @@
-# mstack
+# yastack
 
 A library which implements a stack.
