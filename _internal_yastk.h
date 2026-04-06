@@ -35,8 +35,8 @@ size_t    _internal_get_yastk_struct_size();
 void     _internal_init_yastk(yastk_t* stack, int opts);
 void     _internal_free_yastk(yastk_t* stack, int opts);
 
-void      _internal_yastk_push(yastk_t* stack, void* data, int opts);
-void     _internal_yastk_pop (yastk_t* stack, void** out_data, int opts);
+void      _internal_push_yastk(yastk_t* stack, void* data, int opts);
+void     _internal_pop_yastk (yastk_t* stack, void** out_data, int opts);
 
 size_t    _internal_get_size_yastk(yastk_t* stack, int opts);
 

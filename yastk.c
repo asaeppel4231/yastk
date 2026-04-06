@@ -1,20 +1,86 @@
 #include "yastk.h"
+#include "_internal_yastk.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-yastk_t* new_yastk (int opts);
-void      free_yastk(yastk_t* stack);
+yastk_t* new_yastk(int opts) {
+    yastk_t* stack = malloc(_internal_get_yastk_struct_size());
+    if (stack == NULL) {
+        return NULL;
+    }
+    _internal_init_yastk(stack, opts);
+    return stack;
+}
 
-int       push_yastk(yastk_t* stack, void* data, int opts);
-void*     pop_yastk(yastk_t* stack, int opts);
+void free_yastk(yastk_t* stack) {
+    if (stack != NULL) {
+        _internal_free_yastk(stack, 0);
+    }
+}
+
+int push_yastk(yastk_t* stack, void* data, int opts) {
+    if (stack == NULL) {
+        return -1;
+    }
+    _internal_push_yastk(stack, data, opts);
+    return 0;
+}
+
+void* pop_yastk(yastk_t* stack, int opts) {
+    if (stack == NULL || get_size_yastk(stack) == 0) {
+        return NULL;
+    }
+    void* result = NULL;
+    _internal_pop_yastk(stack, &result, opts);
+    return result;
+}
+
+size_t get_size_yastk(yastk_t* stack) {
+    if (stack == NULL) {
+        return 0;
+    }
+    return _internal_get_size_yastk(stack, 0);
+}
 
 char* info_yastk() {
     char* buf = malloc(2048);
     if (!buf) return NULL;
 
     buf[0] = '\0';
+
+    const char* build_type = 
+#ifdef NDEBUG
+        "Release"
+#else
+        "Debug"
+#endif
+    ;
+    
+    const char* compiler = 
+#ifdef __clang__
+        "Clang"
+#elif defined(__GNUC__)
+        "GCC"
+#elif defined(_MSC_VER)
+        "MSVC"
+#else
+        "Unknown"
+#endif
+    ;
+    
+    const char* platform = 
+#ifdef __linux__
+        "Linux"
+#elif defined(_WIN32)
+        "Windows"
+#elif defined(__APPLE__)
+        "macOS"
+#else
+        "Unknown OS"
+#endif
+    ;
 
     snprintf(buf, 2048,
         "yastk version %d.%d.%d\n"
@@ -25,32 +91,9 @@ char* info_yastk() {
         YASTK_VERSION_MAJOR,
         YASTK_VERSION_MINOR,
         YASTK_VERSION_PATCHLEVEL,
-#ifdef NDEBUG
-        "Release",
-#else
-        "Debug",
-#endif
-#ifdef __clang__
-    "Compiler: Clang %d.%d.%d\n",
-    __clang_major__, __clang_minor__, __clang_patchlevel__,
-#elif defined(__GNUC__)
-    "Compiler: GCC %d.%d.%d\n",
-    __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__,
-#elif defined(_MSC_VER)
-    "Compiler: MSVC %d\n",
-    _MSC_VER
-#else
-    "Compiler: Unknown\n"
-#endif
-#ifdef __linux__
-        "Linux",
-#elif _WIN32
-        "Windows",
-#elif __APPLE__
-        "macOS",
-#else
-        "Unknown OS",
-#endif
+        build_type,
+        compiler,
+        platform,
         sizeof(void*)
     );
 

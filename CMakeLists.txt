@@ -7,11 +7,11 @@ add_library(yastk STATIC
 )
 
 target_include_directories(yastk
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 set_target_properties(yastk PROPERTIES
-    C_STANDARD 89
+    C_STANDARD 99
     POSITION_INDEPENDENT_CODE ON
 )
 

@@ -97,20 +97,47 @@ void      _internal_push_yastk(yastk_t* stack, void* data, int opts){
 
     _internal_init_yastk_entry(temp);
     _internal_set_yastk_entry_data(temp, data, NULL); /* FIXME: Save a free function in the structure and use that*/
-    _internal_set_next_yastk_entry(stack->tail, temp, NULL);
-    _internal_set_next_yastk_entry(temp, NULL, NULL);
+    
+    if (stack->head == NULL) {
+        stack->head = temp;
+        stack->tail = temp;
+    } else {
+        _internal_set_next_yastk_entry(stack->tail, temp, NULL);
+        stack->tail = temp;
+    }
+    
+    stack->size++;
 }
 
 void     _internal_pop_yastk(yastk_t* stack, void** out_data, int opts){
-    void* result = _internal_get_yastk_entry_data(stack->tail);
-    yastk_entry_t* temp = stack->head;
-    while(temp != NULL && _internal_get_next_yastk_entry(temp) != stack->tail){ /* TODO: Use a helper pointer instead*/
-        temp = _internal_get_next_yastk_entry(temp);
+    if (stack->size == 0 || stack->tail == NULL) {
+        *out_data = NULL;
+        return;
     }
-    _internal_free_yastk_entry(stack->tail, NULL); /* See Line 101 and 90 */
-    _internal_set_next_yastk_entry(temp, NULL, NULL);
     
-    stack->tail = temp;
+    void* result = _internal_get_yastk_entry_data(stack->tail);
+    
+    if (stack->head == stack->tail) {
+        /* Only one entry, remove it */
+        _internal_free_yastk_entry(stack->tail, NULL);
+        stack->head = NULL;
+        stack->tail = NULL;
+    } else {
+        /* Find previous node and update pointers */
+        yastk_entry_t* temp = stack->head;
+        while(temp != NULL && _internal_get_next_yastk_entry(temp) != stack->tail){
+            temp = _internal_get_next_yastk_entry(temp);
+        }
+        _internal_free_yastk_entry(stack->tail, NULL);
+        stack->tail = temp;
+        if (temp != NULL) {
+            _internal_set_next_yastk_entry(temp, NULL, NULL);
+        }
+    }
+    
+    if (stack->size > 0) {
+        stack->size--;
+    }
     
     *out_data = result;
 }
