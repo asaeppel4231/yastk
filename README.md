@@ -5,6 +5,7 @@ A lightweight C99 stack library with a simple, efficient API. yastk provides a g
 ## Overview
 
 yastk implements a dynamically-allocated singly-linked-list-based stack. It supports:
+
 - Arbitrary payload types (via `void*` pointers)
 - Dynamic memory allocation
 - Size tracking
@@ -20,16 +21,20 @@ yastk implements a dynamically-allocated singly-linked-list-based stack. It supp
 ## Public API
 
 ### `yastk_t* new_yastk(int opts)`
+
 Allocates and initializes a new stack.
 
 **Parameters:**
+
 - `opts` - Options bitmask (currently unused, pass 0)
 
 **Returns:**
+
 - Pointer to allocated stack on success
 - NULL on allocation failure
 
 **Example:**
+
 ```c
 yastk_t* stack = new_yastk(0);
 if (stack == NULL) {
@@ -39,32 +44,39 @@ if (stack == NULL) {
 ```
 
 ### `void free_yastk(yastk_t* stack)`
+
 Deallocates a stack and all its entries.
 
 **Parameters:**
+
 - `stack` - Pointer to stack (safe to pass NULL)
 
 **Note:** This function does NOT call destructors on payload data. Data must be manually cleaned up before freeing the stack if needed.
 
 **Example:**
+
 ```c
 free_yastk(stack);
 stack = NULL;  // Good practice
 ```
 
 ### `int push_yastk(yastk_t* stack, void* data, int opts)`
+
 Pushes data onto the stack.
 
 **Parameters:**
+
 - `stack` - Pointer to stack
 - `data` - Pointer to data (can be NULL)
 - `opts` - Options bitmask (currently unused, pass 0)
 
 **Returns:**
+
 - 0 on success
 - -1 on error (NULL stack or allocation failure)
 
 **Example:**
+
 ```c
 int value = 42;
 if (push_yastk(stack, &value, 0) != 0) {
@@ -73,17 +85,21 @@ if (push_yastk(stack, &value, 0) != 0) {
 ```
 
 ### `void* pop_yastk(yastk_t* stack, int opts)`
+
 Pops data from the stack.
 
 **Parameters:**
+
 - `stack` - Pointer to stack
 - `opts` - Options bitmask (currently unused, pass 0)
 
 **Returns:**
+
 - Pointer to popped data on success
 - NULL if stack is empty or invalid
 
 **Example:**
+
 ```c
 void* data = pop_yastk(stack, 0);
 if (data != NULL) {
@@ -93,28 +109,35 @@ if (data != NULL) {
 ```
 
 ### `size_t get_size_yastk(yastk_t* stack)`
+
 Returns the current number of elements in the stack.
 
 **Parameters:**
+
 - `stack` - Pointer to stack
 
 **Returns:**
+
 - Number of elements on success
 - 0 if stack is NULL or empty
 
 **Example:**
+
 ```c
 printf("Stack size: %zu\n", get_size_yastk(stack));
 ```
 
 ### `char* info_yastk()`
+
 Returns a dynamically allocated string with library version and build information.
 
 **Returns:**
+
 - Pointer to allocated info string (must be freed by caller)
 - NULL on allocation failure
 
 **Example:**
+
 ```c
 char* info = info_yastk();
 if (info != NULL) {
@@ -157,6 +180,7 @@ int main() {
 ## Building
 
 ### Standalone (with CMake)
+
 ```bash
 mkdir build
 cd build
@@ -165,9 +189,11 @@ make
 ```
 
 ### As Part of h2ot3
+
 The yastk library is automatically built when building the h2ot3 project. It is linked as a PUBLIC dependency of `h2ot3_engine`.
 
 ### Build Options
+
 - `YASTK_BUILD_TESTS` (ON by default) - Build unit tests via CUnit
 
 ## Testing
