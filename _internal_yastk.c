@@ -98,7 +98,7 @@ void      _internal_push_yastk(yastk_t* stack, void* data, int opts){
     _internal_init_yastk_entry(temp);
     _internal_set_yastk_entry_data(temp, data, NULL); /* FIXME: Save a free function in the structure and use that*/
     _internal_set_next_yastk_entry(stack->tail, temp, NULL);
-
+    _internal_set_next_yastk_entry(temp, NULL, NULL);
 }
 
 void     _internal_pop_yastk(yastk_t* stack, void** out_data, int opts){
@@ -117,4 +117,12 @@ void     _internal_pop_yastk(yastk_t* stack, void** out_data, int opts){
 
 size_t    _internal_get_size_yastk(yastk_t* stack, int opts){
     return stack->size;
+}
+
+yastk_entry_t* _internal_get_head_yastk(yastk_t* stack, int opts){
+    return stack->head; /* TODO: Use the opts parameter */
+}
+
+yastk_entry_t* _internal_get_tail_yastk(yastk_t* stack, int opts){
+    return stack->tail; /* TODO: use the opts parameter*/
 }

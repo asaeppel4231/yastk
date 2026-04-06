@@ -39,6 +39,7 @@ void      _internal_yastk_push(yastk_t* stack, void* data, int opts);
 void     _internal_yastk_pop (yastk_t* stack, void** out_data, int opts);
 
 size_t    _internal_get_size_yastk(yastk_t* stack, int opts);
+
 yastk_entry_t* _internal_get_head_yastk(yastk_t* stack, int opts);
 yastk_entry_t* _internal_get_tail_yastk(yastk_t* stack, int opts);
 
