@@ -24,7 +24,7 @@ int push_yastk(yastk_t* stack, void* data, int opts) {
     if (stack == NULL) {
         return -1;
     }
-    _internal_push_yastk(stack, data, opts);
+    _internal_yastk_push(stack, data, opts);
     return 0;
 }
 
@@ -33,7 +33,7 @@ void* pop_yastk(yastk_t* stack, int opts) {
         return NULL;
     }
     void* result = NULL;
-    _internal_pop_yastk(stack, &result, opts);
+    _internal_yastk_pop(stack, &result, opts);
     return result;
 }
 
@@ -42,6 +42,20 @@ size_t get_size_yastk(yastk_t* stack) {
         return 0;
     }
     return _internal_get_size_yastk(stack, 0);
+}
+
+void* peek_head_yastk(yastk_t* stack) {
+    if (stack == NULL || _internal_get_head_yastk(stack, 0) == NULL) {
+        return NULL;
+    }
+    return _internal_get_yastk_entry_data(_internal_get_head_yastk(stack, 0));
+}
+
+void* peek_tail_yastk(yastk_t* stack) {
+    if (stack == NULL || _internal_get_tail_yastk(stack, 0) == NULL) {
+        return NULL;
+    }
+    return _internal_get_yastk_entry_data(_internal_get_tail_yastk(stack, 0));
 }
 
 char* info_yastk() {
