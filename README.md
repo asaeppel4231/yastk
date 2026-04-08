@@ -1,4 +1,4 @@
-# yastk - Yet Another Stack Kit
+# yastk - Yet Another Stack Library
 
 A lightweight C99 stack library with a simple, efficient API. yastk provides a generic stack data structure suitable for embedded systems and general-purpose applications.
 

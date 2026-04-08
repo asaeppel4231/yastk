@@ -1,8 +1,16 @@
 #include "_internal_yastk.h"
-#include "yastk_debug.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+// Fixes clangd errors if helpers.h not found
+
+#ifndef LOG_FUNCTION_CALL
+#define LOG_FUNCTION_CALL(fn_name)
+#endif
+#ifndef LOG_DEBUG
+#define LOG_DEBUG(formatted_string, ...) /* NOTE: Requires C99 */
+#endif
 
 struct yastk_entry{
     void* data;

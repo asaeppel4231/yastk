@@ -26,7 +26,7 @@ set_target_properties(yastk PROPERTIES
     POSITION_INDEPENDENT_CODE ON
 )
 
-option(YASTK_BUILD_TESTS "Build tests for yastk" ON)
+option(YASTK_BUILD_TESTS "Build tests for yastk" OFF)
 
 if(YASTK_BUILD_TESTS)
     enable_testing()

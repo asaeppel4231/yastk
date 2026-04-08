@@ -1,5 +1,22 @@
 #include "yastk.h"
+
+#ifdef NDEBUG
+#define HAD_NDEBUG 1
+#else
+#define HAD_NDEBUG 0
+#endif
+
+#ifndef NDEBUG
+#define NDEBUG
+#endif
 #include "_internal_yastk.h"
+
+#if HAD_NDEBUG
+
+#else
+#undef NDEBUG
+#endif
+
 
 #include <stdlib.h>
 #include <string.h>
