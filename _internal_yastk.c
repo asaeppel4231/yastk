@@ -4,7 +4,6 @@
 #include <string.h>
 
 // Fixes clangd errors if helpers.h not found
-
 #ifndef LOG_FUNCTION_CALL
 #define LOG_FUNCTION_CALL(fn_name)
 #endif
