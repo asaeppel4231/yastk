@@ -11,10 +11,12 @@
 #define LOG_DEBUG(formatted_string, ...) /* NOTE: Requires C99 */
 #endif
 
+/* STRUCTURES */
 struct yastk_entry{
     void* data;
     struct yastk_entry* next;
 };
+
 
 struct yastk{
     yastk_entry_t* head;
